@@ -22,7 +22,8 @@ export default function Register() {
             });
 
             if (!res.ok) {
-                throw new Error("Registration failed. Try again.");
+                const errorData = await res.json();  // Get the error message from the response
+                throw new Error(errorData.message || "Registration failed. Try again.");
             }
 
             alert("User registered successfully!");
@@ -31,35 +32,49 @@ export default function Register() {
             setError(err instanceof Error? err.message: "An error occured");
         }
     };
-
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
-          <div className="bg-black p-8 rounded-lg shadow-md w-96">
-            <h2 className="font-serif text-2xl font-bold mb-6 text-center">Register</h2>
-            <form className="space-y-4">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-blue-900 to-blue-500">
+          <div className="bg-black p-8 rounded-lg shadow-lg w-96 border border-gray-700">
+            <h2 className="font-serif text-2xl font-bold mb-6 text-center text-white">Register</h2>
+            <form className="space-y-4"  onSubmit={handleRegister}>
               <input
-              autoComplete="off"
+                autoComplete="off"
                 type="text"
                 placeholder="Username"
-                className="font-mono text-blue-300 w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+                className="font-mono text-blue-300 w-full p-2 border border-gray-600 rounded bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <input
-              autoComplete="off"
+                autoComplete="off"
                 type="email"
                 placeholder="Email"
-                className="font-mono text-blue-300 w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="font-mono text-blue-300 w-full p-2 border border-gray-600 rounded bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <input
-              autoComplete="off"
+                autoComplete="off"
                 type="password"
                 placeholder="Password"
-                className="font-mono text-blue-300 w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="font-mono text-blue-300 w-full p-2 border border-gray-600 rounded bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <button className="font-serif w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition">
                 Sign Up
               </button>
             </form>
+            <p className="text-center text-gray-400 mt-4">
+              Already have an account?{" "}
+              <button
+                onClick={() => router.push("/login")}
+                className="text-blue-400 hover:underline"
+              >
+                Log in
+              </button>
+            </p>
           </div>
         </div>
-      );
+      );     
 }

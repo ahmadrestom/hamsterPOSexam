@@ -9,7 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.project.E_commerce.Repository.UserRepository;
 import com.project.E_commerce.config.JwtService;
-import com.project.E_commerce.models.user;
+import com.project.E_commerce.models.User;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -26,7 +26,7 @@ public class AuthenticationService {
 		if (repository.existsByEmail(request.getEmail())){
 	        throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already exists");
 	    }
-		var userr = user.builder()
+		var userr = User.builder()
 				.name(request.getUserName())
 				.email(request.getEmail())
 				.password(passwordEncoder.encode(request.getPassword()))
@@ -52,7 +52,7 @@ public class AuthenticationService {
 		var jwtToken = jwtService.generateToken(user);
 		return AuthenticationResponse.builder()
 				.token(jwtToken)
-				.name(user.getName())
+				.name(user.getUsername())
 				.id(user.getId())
 				.build();
 	}	

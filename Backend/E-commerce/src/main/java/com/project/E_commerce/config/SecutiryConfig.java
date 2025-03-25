@@ -27,6 +27,9 @@ public class SecutiryConfig {
                         .requestMatchers("/api/v1/**").permitAll()
                         .requestMatchers("/api/v2/**").authenticated()
                         .anyRequest().permitAll())
+                .headers(headers -> headers
+                        .frameOptions().sameOrigin() // Allow H2 console to be embedded
+                    )
                 .sessionManagement(management -> management
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
