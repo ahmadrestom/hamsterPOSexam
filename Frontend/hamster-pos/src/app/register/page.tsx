@@ -2,18 +2,15 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-
 export default function Register() {
     const [userName, setUserName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const router = useRouter();
-
     const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError("");
-
         try {
             const res = await fetch("http://localhost:8080/api/v1/auth/register", {
                 method: "POST",
@@ -22,10 +19,9 @@ export default function Register() {
             });
 
             if (!res.ok) {
-                const errorData = await res.json();  // Get the error message from the response
-                throw new Error(errorData.message || "Registration failed. Try again.");
+                const errorData = await res.json();
+                throw new Error(errorData.message || "Registration failed.try again.");
             }
-
             alert("User registered successfully!");
             router.push("Pages/login");
         } catch (err) {

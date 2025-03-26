@@ -19,6 +19,8 @@ interface Category{
   description:string
 }
 
+
+
 const CustomerDashboard = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -103,7 +105,7 @@ const CustomerDashboard = () => {
         {categories.map((category) => (
           <div
             key={category.id}
-            onClick={() => setSelectedCategory(category.title)}
+            onClick={() => setSelectedCategory(selectedCategory === category.title ? null : category.title)}
             className={`p-0 rounded-md cursor-pointer ${
               selectedCategory === category.title ? "bg-blue-100 text-black" : "bg-black-100"
             }`}

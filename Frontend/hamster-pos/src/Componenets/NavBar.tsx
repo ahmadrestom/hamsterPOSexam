@@ -16,7 +16,7 @@ const Navbar = () => {
           <Link href="/profile" className="text-white hover:text-blue-300">
             Profile
           </Link>
-          <Link href="/cart" className="text-white hover:text-blue-300">
+          <Link href="cart" className="text-white hover:text-blue-300">
             Cart
           </Link>
           <button
