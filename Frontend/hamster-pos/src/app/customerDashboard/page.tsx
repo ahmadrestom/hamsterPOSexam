@@ -5,7 +5,7 @@ import Navbar from "../../Componenets/NavBar";
 import ProductCard from "../../Componenets/ProductCard";
 import { useRouter } from "next/navigation";
 import CategoryCard from "@/Componenets/CategoryCard";
-
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
 interface Product {
   id: number;
@@ -29,9 +29,7 @@ const CustomerDashboard = () => {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-
-
-  const role = localStorage.getItem("role");
+  const [role, setRole] = useState<string>(""); 
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -40,6 +38,8 @@ const CustomerDashboard = () => {
         router.push("/login");
         return;
     }
+    const userrole = localStorage.getItem("role");
+    setRole(userrole || "");
     fetch("http://localhost:8080/api/v2/products/getAllProducts", {
         method: 'GET',
         credentials: 'include',
@@ -84,7 +84,16 @@ const CustomerDashboard = () => {
     );
   });
 
-  return (   
+  const handleDragEnd = (result: any) => {
+    const { destination, source } = result;
+    if (!destination) return;
+    const items = Array.from(products);
+    const [reorderedItem] = items.splice(source.index, 1);
+    items.splice(destination.index, 0, reorderedItem);
+    setProducts(items);
+  };
+
+  return (
     <div>
       <Navbar />
       <div className="container mx-auto p-4">
@@ -100,39 +109,72 @@ const CustomerDashboard = () => {
           />
         </div>
 
-
-
-
-      <div className="mb-6">
-      <h2 className="text-xl font-semibold">Categories</h2>
-      <div className="grid grid-cols-3 gap-7 mt-4">
-        {categories.map((category) => (
-          <div
-            key={category.id}
-            onClick={() => setSelectedCategory(selectedCategory === category.title ? null : category.title)}
-            className={`p-0 rounded-md cursor-pointer ${
-              selectedCategory === category.title ? "bg-blue-100 text-black" : "bg-black-100"
-            }`}
-          >
-            <CategoryCard category={category} />
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold">Categories</h2>
+          <div className="grid grid-cols-3 gap-7 mt-4">
+            {categories.map((category) => (
+              <div
+                key={category.id}
+                onClick={() =>
+                  setSelectedCategory(
+                    selectedCategory === category.title ? null : category.title
+                  )
+                }
+                className={`p-0 rounded-md cursor-pointer ${
+                  selectedCategory === category.title
+                    ? "bg-blue-100 text-black"
+                    : "bg-black-100"
+                }`}
+              >
+                <CategoryCard category={category} />
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-    </div>
+        </div>
+
         <div className="mb-6">
           <h2 className="text-xl font-semibold">Products</h2>
           {loading ? (
             <p>Loading products...</p>
           ) : (
-            <div className="grid grid-cols-3 gap-4 mt-4">
-              {filteredProducts.length > 0 ? (
-                filteredProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))
-              ) : (
-                <p>No products found</p>
-              )}
-            </div>
+            <DragDropContext onDragEnd={handleDragEnd}>
+              <Droppable droppableId="products">
+                {(provided) => (
+                  <div
+                    className="grid grid-cols-3 gap-4 mt-4"
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                  >
+                    {filteredProducts.length > 0 ? (
+                      filteredProducts.map((product, index) =>
+                        role === "admin" ? (
+                          <Draggable
+                            key={product.id}
+                            draggableId={String(product.id)}
+                            index={index}
+                          >
+                            {(provided) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                              >
+                                <ProductCard product={product} />
+                              </div>
+                            )}
+                          </Draggable>
+                        ) : (
+                          <ProductCard key={product.id} product={product} />
+                        )
+                      )
+                    ) : (
+                      <p>No products found</p>
+                    )}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </DragDropContext>
           )}
         </div>
       </div>

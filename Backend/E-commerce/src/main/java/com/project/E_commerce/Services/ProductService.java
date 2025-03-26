@@ -2,19 +2,26 @@ package com.project.E_commerce.Services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project.E_commerce.DTO.GetProductsDTO;
+import com.project.E_commerce.Repository.CategoryRepository;
 import com.project.E_commerce.Repository.ProductRepository;
+import com.project.E_commerce.models.Category;
 import com.project.E_commerce.models.Product;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class ProductService {
 	
 	@Autowired
     private ProductRepository productRepository;
+	@Autowired
+    private CategoryRepository categoryRepository;
 	
 	public List<GetProductsDTO> getAllProducts() {
         List<Product> products =  productRepository.findAll();
@@ -33,7 +40,22 @@ public class ProductService {
         return productDTOs;
     }
 	
-	public Product createProduct(Product product) {
+	@Transactional
+    public Product createProduct(Product product) {
+        Category category = product.getCategory();
+
+        if (category != null) {
+            
+            Optional<Category> existingCategory = categoryRepository.findByTitle(category.getTitle());
+
+            if (existingCategory.isPresent()) {
+                product.setCategory(existingCategory.get());
+            } else {
+                categoryRepository.save(category);
+                product.setCategory(category);
+            }
+        }
+
         return productRepository.save(product);
     }
 	

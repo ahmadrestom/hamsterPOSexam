@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# E-Commerce Application
 
-## Getting Started
+## Project Overview
+This is a fullsstack e-commerce application built using **Next.js** for the frontend and **Spring Boot** for the backend. The application provides **authentication, product and category management, and a shopping cart feature**.
 
-First, run the development server:
+## Architecture
+- **Frontend**: Next.js, Tailwind CSS, Material-UI
+- **Backend**: Spring Boot, H2(in memory), JWT Authentication
+- **Database**: H2 for persisting data
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
+-  **User authentication** (JWT-based login and registration)
+-  **Product management** (CRUD operations)
+-  **Category management** (CRUD operations)
+-  **Shopping cart functionality**
+-  **Role-based access** (Admin/User)
+-  **Drag-and-drop product reordering**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Setup and Installation
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Prerequisites
+Ensure you have the following installed:
+- 🔹 **Node.js**
+- 🔹 **Java**
+- 🔹 **Maven**
 
-## Learn More
+### Backend Setup
+1. **Clone the repository:**
+   ```sh
+   git clone https://github.com/ahmadrestom/hamsterPOSexam
+   cd ecommerce-app/Backend
+   ```
+2. **Configure the database in `application.properties`:**
+   ```properties
+   spring.application.name=E-commerceBackend
+   spring.datasource.driver-class-name=org.h2.Driver
+   spring.datasource.username=sa
+   spring.datasource.password=
+   spring.h2.console.enabled=true
+   spring.h2.console.path=/h2-console
+   spring.jpa.hibernate.ddl-auto=update
+   spring.jpa.show-sql=true
+   spring.h2.console.settings.web-allow-others=true
+   spring.datasource.url=jdbc:h2:~/test;AUTO_SERVER=TRUE
+   ```
+3. **Build and run the backend:**
+   mvn clean install
+   mvn spring-boot:run
+4. **The backend API will be available at:** `http://localhost:8080`
 
-To learn more about Next.js, take a look at the following resources:
+### Frontend Setup
+1. **Navigate to the frontend directory:**
+   git clone https://github.com/ahmadrestom/hamsterPOSexam
+   cd Frontend/hamster-pos
+2. **Install dependencies:**
+   npm install
+3. **Run the development server:**
+   npm run dev
+4. **Open:** `http://localhost:3000` in browser
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## API Endpoints
 
-## Deploy on Vercel
+### Authentication
+- `POST /api/v1/auth/register` → Register a new user
+- `POST /api/v1/auth/login` → Login and obtain a JWT token
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### API Secure and Permitted
+- `api/v1` → permitted
+- `api/v2` → authenticated
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Products
+- `GET /api/v2/products/getAllProducts` → Fetch all products
+- `POST /api/v2/products/createProduct` → Create a new product (give the request body)
+- `PUT /api/v2/products/updateProduct/{id}` → Update product details
+- `DELETE /api/v2/productsdeleteProduct/{id}` → Delete a product
+
+### Categories
+- `GET /api/v2/categories/getAllCategories` → Fetch all categories
+- `POST /api/v2/categories/addCategory` → Create a new category
+- `PUT /api/v2/categories/updateCategory/{id}` → Update category
+- `DELETE /api/v2/categories/deleteCategory/{id}` → Delete a new category
+
+---
+
+## Notes and Assumptions
+- 🔹 Users **must be authenticated** to access protected routes.
+- 🔹 **Admin users** have full access to product and category management.
+- 🔹 **Categories should not have duplicate names**.
+- 🔹 A **product must be assigned** to an existing category.
+- 🔹 JWT tokens **expire after a set time** (configurable in backend).
+
+---
+
+## Troubleshooting
+-  **If CORS issues occur:** Check the Spring Boot CORS configuration.
+-  **If frontend API calls fail:** Verify that the backend is running at `http://localhost:8080`.

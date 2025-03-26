@@ -28,7 +28,7 @@ public class ProductController {
 	
 	@RequestMapping(value = "/getAllProducts", method = RequestMethod.OPTIONS)
     public ResponseEntity<Void> handleOptions() {
-        return ResponseEntity.ok().build();  // Return a 200 OK response to OPTIONS request
+        return ResponseEntity.ok().build(); 
     }
 	
 	@GetMapping("/getAllProducts")
@@ -43,7 +43,7 @@ public class ProductController {
         return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
     }
 	
-	@PutMapping("updateProduct/{id}")
+	@PutMapping("/updateProduct/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable Integer id, @RequestBody Product productDetails) {
         try {
             Product updatedProduct = productService.updateProduct(id, productDetails);
