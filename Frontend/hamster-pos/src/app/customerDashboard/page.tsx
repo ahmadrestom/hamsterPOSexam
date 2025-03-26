@@ -30,6 +30,9 @@ const CustomerDashboard = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
+
+  const role = localStorage.getItem("role");
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     console.log(token);

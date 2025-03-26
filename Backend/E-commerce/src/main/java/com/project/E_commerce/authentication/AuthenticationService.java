@@ -1,5 +1,6 @@
 package com.project.E_commerce.authentication;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,7 +17,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthenticationService {
 	
-	private String adminCode = "abcd1234!!";
+	@Value("${admin.code}")
+	private String adminCode;
 	
 	private final UserRepository repository;
 	private final PasswordEncoder passwordEncoder;
@@ -64,6 +66,7 @@ public class AuthenticationService {
 				.token(jwtToken)
 				.name(user.getUsername())
 				.id(user.getId())
+				.role(user.getRole())
 				.build();
 	}	
 	

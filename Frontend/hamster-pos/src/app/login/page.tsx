@@ -26,6 +26,8 @@ export default function login() {
 
       const data = await res.json();
       localStorage.setItem("token", data.token);
+      localStorage.setItem("role", data.role);
+      console.log("XXXXXXXXXXXXXXXXXXXXx "+ data.role);
 
       alert("Login successful!");
       router.push("/customerDashboard");

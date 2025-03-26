@@ -1,6 +1,7 @@
 package com.project.E_commerce.authentication;
 
 
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -29,8 +31,22 @@ public class AuthenticationController {
 	
 	@PostMapping("/login")
 	public ResponseEntity<AuthenticationResponse> register(
-			@RequestBody AuthenticationRequest request
+			@RequestBody AuthenticationRequest request,
+			HttpServletResponse response
 	){
-		return ResponseEntity.ok(service.authenticate(request));
+		AuthenticationResponse authResponse = service.authenticate(request);
+		String token = authResponse.getToken();
+		
+		ResponseCookie cookie = ResponseCookie.from("token", token)
+                .httpOnly(true)
+                .secure(true)  
+                .path("/")  
+                .maxAge(10000)
+                .build();
+		
+		response.addHeader("Set-Cookie", cookie.toString());
+		
+		
+		return ResponseEntity.ok(authResponse);
 	}
 }
