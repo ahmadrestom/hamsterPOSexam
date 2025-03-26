@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.E_commerce.DTO.GetCategoryDTO;
 import com.project.E_commerce.Services.CategoryService;
 import com.project.E_commerce.models.Category;
 
@@ -28,9 +29,9 @@ public class CategoryController{
     private CategoryService categoryService;
 	
 	@GetMapping("/getAllCategories")
-    public ResponseEntity<List<Category>> getAllCategories() {
+    public ResponseEntity<List<GetCategoryDTO>> getAllCategories() {
         try {
-            List<Category> categories = categoryService.getAllCategories();
+            List<GetCategoryDTO> categories = categoryService.getAllCategories();
             return new ResponseEntity<>(categories, HttpStatus.OK);
         } catch (Exception e) {
         	e.printStackTrace();

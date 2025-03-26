@@ -28,7 +28,7 @@ export default function login() {
       localStorage.setItem("token", data.token);
 
       alert("Login successful!");
-      router.push("/customerDashboard"); // Redirect after login
+      router.push("/customerDashboard");
     } catch (err) {
         setError(err instanceof Error? err.message: "An error occured");
     }

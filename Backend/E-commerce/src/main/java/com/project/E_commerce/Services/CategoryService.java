@@ -1,10 +1,12 @@
 package com.project.E_commerce.Services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.project.E_commerce.DTO.GetCategoryDTO;
 import com.project.E_commerce.Repository.CategoryRepository;
 import com.project.E_commerce.models.Category;
 
@@ -14,8 +16,18 @@ public class CategoryService {
 	@Autowired
     private CategoryRepository categoryRepository;
 	
-	public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+	public List<GetCategoryDTO> getAllCategories() {
+        List<Category> categories =  categoryRepository.findAll();
+        List<GetCategoryDTO> cDTOs = new ArrayList<>();
+        for(Category category:categories) {
+        	GetCategoryDTO dto = GetCategoryDTO.builder()
+        			.id(category.getCategory_id())
+        			.title(category.getTitle())
+        			.description(category.getDescription())
+        			.build();
+        	cDTOs.add(dto);
+        }
+        return cDTOs;
     }
 	
 	public Category createCategory(Category category) {
