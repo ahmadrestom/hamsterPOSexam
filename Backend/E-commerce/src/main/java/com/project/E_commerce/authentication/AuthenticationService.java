@@ -16,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthenticationService {
 	
+	private String adminCode = "abcd1234!!";
+	
 	private final UserRepository repository;
 	private final PasswordEncoder passwordEncoder;
 	private final JwtService jwtService;
@@ -26,10 +28,18 @@ public class AuthenticationService {
 		if (repository.existsByEmail(request.getEmail())){
 	        throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already exists");
 	    }
+		
+		String role = "customer";
+		if(request.getAdminCode() != null && request.getAdminCode().equals(adminCode))
+		
+		{
+			role = "admin";
+		}
 		var userr = User.builder()
 				.name(request.getUserName())
 				.email(request.getEmail())
 				.password(passwordEncoder.encode(request.getPassword()))
+				.role(role)
 				.build();
 		repository.save(userr);
 		

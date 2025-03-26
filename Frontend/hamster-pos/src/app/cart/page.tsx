@@ -92,8 +92,8 @@ const CartPage = () => {
               </tbody>
             </table>
             <div className="text-right mt-4">
-              <h2 className="text-xl font-semibold">Total: ${getTotalPrice()}</h2>
-              <button className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md">
+              <h2 className="text-black text-xl font-semibold">Total: ${getTotalPrice()}</h2>
+              <button className="mt-4 bg-blue-600 text-black px-4 py-2 rounded-md">
                 Checkout
               </button>
             </div>

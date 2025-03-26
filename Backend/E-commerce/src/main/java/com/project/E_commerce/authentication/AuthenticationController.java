@@ -22,6 +22,7 @@ public class AuthenticationController {
 	public ResponseEntity<AuthenticationResponse> register(
 			@RequestBody RegisterRequest request
 	){
+		System.out.println(request.getAdminCode() +" xxx");
 		return ResponseEntity.ok(service.register(request));
 	}
 	

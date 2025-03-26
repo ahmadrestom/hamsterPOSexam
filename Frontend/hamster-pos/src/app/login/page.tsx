@@ -68,7 +68,7 @@ export default function login() {
         <p className="text-center text-gray-400 mt-4">
           Don't have an account?{" "}
           <button
-            onClick={() => router.push("Pages/register")}
+            onClick={() => router.push("register")}
             className="text-blue-400 hover:underline"
           >
             Sign Up

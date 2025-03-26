@@ -6,6 +6,7 @@ import ProductCard from "../../Componenets/ProductCard";
 import { useRouter } from "next/navigation";
 import CategoryCard from "@/Componenets/CategoryCard";
 
+
 interface Product {
   id: number;
   title: string;
