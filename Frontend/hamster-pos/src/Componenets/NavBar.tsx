@@ -1,5 +1,4 @@
-// components/Navbar.tsx
-import Link from "next/link"; // Use Next.js Link component
+import Link from "next/link";
 
 const Navbar = () => {
   return (

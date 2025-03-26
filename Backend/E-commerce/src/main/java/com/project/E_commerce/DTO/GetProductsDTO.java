@@ -11,6 +11,7 @@ import lombok.Builder;
 @Builder
 public class GetProductsDTO {
 	
+	private Integer id;
 	private String title;
 	private String description;
 	private double price;

@@ -21,6 +21,7 @@ public class ProductService {
         List<GetProductsDTO> productDTOs = new ArrayList<>();
         for(Product product: products){
         	GetProductsDTO productDTO = GetProductsDTO.builder()
+        			.id(product.getProduct_id())
         			.title(product.getTitle())
         			.description(product.getDescription())
         			.price(product.getPrice())

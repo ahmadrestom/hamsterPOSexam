@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.E_commerce.Services.ProductService;
 import com.project.E_commerce.models.Product;
+import com.project.E_commerce.DTO.GetProductsDTO;
 
 @RestController
 @RequestMapping("/api/v2/products")
@@ -24,9 +26,14 @@ public class ProductController {
 	@Autowired
     private ProductService productService;
 	
+	@RequestMapping(value = "/getAllProducts", method = RequestMethod.OPTIONS)
+    public ResponseEntity<Void> handleOptions() {
+        return ResponseEntity.ok().build();  // Return a 200 OK response to OPTIONS request
+    }
+	
 	@GetMapping("/getAllProducts")
-    public ResponseEntity<List<Product>> getAllProducts() {
-        List<Product> products = productService.getAllProducts();
+    public ResponseEntity<List<GetProductsDTO>> getAllProducts() {
+        List<GetProductsDTO> products = productService.getAllProducts();
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 	
