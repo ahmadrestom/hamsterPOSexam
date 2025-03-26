@@ -28,7 +28,7 @@ export default function login() {
       localStorage.setItem("token", data.token);
 
       alert("Login successful!");
-      //router.push("/dashboard"); // Redirect after login
+      router.push("/customerDashboard"); // Redirect after login
     } catch (err) {
         setError(err instanceof Error? err.message: "An error occured");
     }
@@ -68,7 +68,7 @@ export default function login() {
         <p className="text-center text-gray-400 mt-4">
           Don't have an account?{" "}
           <button
-            onClick={() => router.push("/register")}
+            onClick={() => router.push("Pages/register")}
             className="text-blue-400 hover:underline"
           >
             Sign Up

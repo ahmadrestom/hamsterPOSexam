@@ -27,7 +27,7 @@ export default function Register() {
             }
 
             alert("User registered successfully!");
-            router.push("/login");
+            router.push("Pages/login");
         } catch (err) {
             setError(err instanceof Error? err.message: "An error occured");
         }
