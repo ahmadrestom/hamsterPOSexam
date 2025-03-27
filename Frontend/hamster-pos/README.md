@@ -87,11 +87,12 @@ Ensure you have the following installed:
 ---
 
 ## Notes and Assumptions
-- 🔹 Users **must be authenticated** to access protected routes.
-- 🔹 **Admin users** have full access to product and category management.
-- 🔹 **Categories should not have duplicate names**.
-- 🔹 A **product must be assigned** to an existing category.
-- 🔹 JWT tokens **expire after a set time** (configurable in backend).
+-  To register as an admin, you must have a specific code, this code is shared among the owner of the app and all the admins, and is found in the application.properties in the backend.
+-  Users **must be authenticated** to access protected routes.
+-  **Admin users** have full access to product and category management.
+-  **Categories should not have duplicate names**.
+-  A **product must be assigned** to an existing category.
+-  JWT tokens **expire after a set time** (configurable in backend).
 
 ---
 
