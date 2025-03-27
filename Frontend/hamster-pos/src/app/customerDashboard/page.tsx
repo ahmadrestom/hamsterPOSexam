@@ -15,7 +15,7 @@ interface Product {
   category: string;
 }
 interface Category{
-  id:number;
+  category_id:number;
   title:string;
   description:string
 }
@@ -114,7 +114,7 @@ const CustomerDashboard = () => {
           <div className="grid grid-cols-3 gap-7 mt-4">
             {categories.map((category) => (
               <div
-                key={category.id}
+                key={category.category_id}
                 onClick={() =>
                   setSelectedCategory(
                     selectedCategory === category.title ? null : category.title

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.E_commerce.Services.ProductService;
 import com.project.E_commerce.models.Product;
 import com.project.E_commerce.DTO.GetProductsDTO;
+import com.project.E_commerce.DTO.PostProductDTO;
 
 @RestController
 @RequestMapping("/api/v2/products")
@@ -38,7 +39,7 @@ public class ProductController {
     }
 	
 	@PostMapping("/createProduct")
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+    public ResponseEntity<Product> createProduct(@RequestBody PostProductDTO product) {
         Product createdProduct = productService.createProduct(product);
         return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
     }

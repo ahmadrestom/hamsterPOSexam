@@ -21,7 +21,7 @@ public class CategoryService {
         List<GetCategoryDTO> cDTOs = new ArrayList<>();
         for(Category category:categories) {
         	GetCategoryDTO dto = GetCategoryDTO.builder()
-        			.id(category.getCategory_id())
+        			.category_id(category.getCategory_id())
         			.title(category.getTitle())
         			.description(category.getDescription())
         			.build();

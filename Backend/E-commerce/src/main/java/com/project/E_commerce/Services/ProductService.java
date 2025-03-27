@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project.E_commerce.DTO.GetProductsDTO;
+import com.project.E_commerce.DTO.PostProductDTO;
 import com.project.E_commerce.Repository.CategoryRepository;
 import com.project.E_commerce.Repository.ProductRepository;
 import com.project.E_commerce.models.Category;
@@ -41,23 +42,28 @@ public class ProductService {
     }
 	
 	@Transactional
-    public Product createProduct(Product product) {
-        Category category = product.getCategory();
+	public Product createProduct(PostProductDTO productDTO) {
+		System.out.println("Incoming DTO: " + productDTO); 
+	    System.out.println("Category: " + productDTO.getCategory());
+	    if (productDTO.getCategory() != null && productDTO.getCategory() != null) {
+	       Optional<Category> existingCategory = categoryRepository.findById(productDTO.getCategory().getCategory_id());
+	       if (existingCategory.isPresent()) {
+	            Product product = new Product();
+	            product.setTitle(productDTO.getTitle());
+	            product.setDescription(productDTO.getDescription());
+	            product.setPrice(productDTO.getPrice());
+	            product.setCategory(existingCategory.get());
+	            return productRepository.save(product);
+	        } else {
+	            
+	            throw new RuntimeException("Category not found");
+	        }
+	    } else {
+	        throw new RuntimeException("Category is required");
+	    }
+	}
 
-        if (category != null) {
-            
-            Optional<Category> existingCategory = categoryRepository.findByTitle(category.getTitle());
 
-            if (existingCategory.isPresent()) {
-                product.setCategory(existingCategory.get());
-            } else {
-                categoryRepository.save(category);
-                product.setCategory(category);
-            }
-        }
-
-        return productRepository.save(product);
-    }
 	
 	public Product updateProduct(Integer id, Product productDetails) {
         Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));

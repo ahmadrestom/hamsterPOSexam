@@ -2,6 +2,12 @@
 
 import React from "react";
 
+interface Category {
+  id: number;
+  title: string;
+  description: string;
+}
+
 interface Product {
   id: number;
   title: string;

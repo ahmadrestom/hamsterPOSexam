@@ -18,7 +18,11 @@ const AdminPanel = () => {
     const [productCategory, setProductCategory] = useState("");
     const [categoryTitle, setCategoryTitle] = useState("");
     const [categoryDescription, setCategoryDescription] = useState("");
-    const [categories, setCategories] = useState<{ id: number; title: string }[]>([]);
+    const [categories, setCategories] = useState<Array<{
+        category_id: number; 
+        title: string;
+        description: string;
+    }>>([]);
 
 
     useEffect(() => {
@@ -40,32 +44,58 @@ const AdminPanel = () => {
 
     const handleAddProduct = async (e: React.FormEvent) => {
         e.preventDefault();
+    
+        if (!productCategory) {
+            alert("Please select a category");
+            return;
+        }
+    
+        const categoryId = Number(productCategory);
+        if (typeof categoryId !== 'number' || isNaN(categoryId)) {
+            alert("Invalid category selected");
+            return;
+        }
+
         const productData = {
             title: productTitle,
             description: productDescription,
-            price: parseFloat(productPrice),
-            category: { id: parseInt(productCategory) },
+            price: Number(productPrice),
+            category: {
+                category_id: categoryId,
+                title: null, 
+                description: null,
+                products: null
+            }
         };
+    
+        console.log("Final payload:", JSON.stringify(productData));
+    
         try {
             const response = await fetch("http://localhost:8080/api/v2/products/createProduct", {
                 method: "POST",
-                headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+                headers: { 
+                    "Content-Type": "application/json", 
+                    "Authorization": `Bearer ${token}` 
+                },
                 body: JSON.stringify(productData),
             });
-            if (response.ok) {
-                alert("Product added successfully!");
-                setProductTitle("");
-                setProductDescription("");
-                setProductPrice("");
-                setProductCategory("");
-            } else {
-                alert("Error adding product.");
+    
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || "Failed to add product");
             }
+    
+            alert("Product added successfully!");
+            setProductTitle("");
+            setProductDescription("");
+            setProductPrice("");
+            setProductCategory("");
+            
         } catch (error) {
-            console.error("Error adding product:", error);
+            console.error("Error:", error);
+            alert(`Error: ${error instanceof Error ? error.message : "Unknown error"}`);
         }
     };
-
     const handleAddCategory = async (e: React.FormEvent) => {
         e.preventDefault();
         const categoryData = {
@@ -89,6 +119,7 @@ const AdminPanel = () => {
             console.error("Error adding category:", error);
         }
     };
+    
 
     return (
         <div className="container mx-auto p-4">
@@ -108,7 +139,7 @@ const AdminPanel = () => {
                     >
                         <option value="">Select a category</option>
                         {categories.map((category) => (
-                            <option key={category.id} value={category.id}>
+                            <option key={category.category_id} value={category.category_id}>
                                 {category.title}
                             </option>
                         ))}
@@ -127,6 +158,7 @@ const AdminPanel = () => {
                 </form>
             </div>
         </div>
+        
     );
 };
 

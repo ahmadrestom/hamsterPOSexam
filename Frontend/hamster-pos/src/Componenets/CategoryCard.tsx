@@ -4,7 +4,7 @@ import React from "react";
 
 interface Category{
   category: {
-    id:number;
+    category_id:number;
     title: string;
     description: string;
   };
